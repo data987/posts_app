@@ -12,14 +12,15 @@ class Description extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Container(
-      padding: EdgeInsets.only(bottom: 10.0),
+      padding: EdgeInsets.only(bottom: 10.0, left: 20.0, right: 20.0),
       width: SizeConfig.blockSizeHorizontal * 100,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           SizedBox(height: 10.0),
-          Text(text, style: TextStyle(fontSize: 12))
+          Text(text, style: TextStyle(fontSize: 13, height: 1.4))
         ],
       ),
     );

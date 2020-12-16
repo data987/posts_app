@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zemoga_posts/core/models/post_model.dart';
 
 class IosBar extends StatefulWidget {
   const IosBar(
@@ -7,13 +8,15 @@ class IosBar extends StatefulWidget {
       @required this.title,
       @required this.onTap,
       this.changeIndex,
-      this.postInfo = false})
+      this.postInfo = false,
+      this.post})
       : super(key: key);
 
   final String title;
   final Function onTap;
   final Function changeIndex;
   final bool postInfo;
+  final PostModel post;
 
   @override
   _IosBarState createState() => _IosBarState();
@@ -29,6 +32,10 @@ class _IosBarState extends State<IosBar> {
 
   @override
   Widget build(BuildContext context) {
+    final isFavorite = widget.post != null && widget.post.favorite
+        ? Icons.star
+        : Icons.star_border;
+
     return Column(
       children: [
         CupertinoNavigationBar(
@@ -48,8 +55,8 @@ class _IosBarState extends State<IosBar> {
           trailing: Material(
             type: MaterialType.transparency,
             child: InkWell(
-                onTap: widget.onTap,
-                child: Icon(widget.postInfo ? Icons.star_border : Icons.refresh,
+                onTap: () => setState(() => widget.onTap()),
+                child: Icon(widget.postInfo ? isFavorite : Icons.refresh,
                     size: 25, color: Colors.white)),
           ),
         ),

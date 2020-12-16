@@ -15,17 +15,19 @@ class Comments extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 10.0),
       width: SizeConfig.blockSizeHorizontal * 100,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
-            color: Colors.grey[600],
-            child: Text(title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+            color: Colors.grey[300],
+            width: SizeConfig.blockSizeHorizontal * 100,
+            child: Text(title.toUpperCase(),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
           ),
           SizedBox(height: 10.0),
           for (var comment in comments) ...[
             Container(
-              padding: EdgeInsets.symmetric(vertical: 14.0),
+              padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 20.0),
               decoration: BoxDecoration(
                   border: Border(bottom: BorderSide(color: Colors.grey))),
               child: Text(comment.body),
