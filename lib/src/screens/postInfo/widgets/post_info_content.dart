@@ -13,13 +13,18 @@ class PostInfoContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Description(title: 'Description', text: post.body),
-          // UserInfo(title: 'User', userInfo: post.user),
-          // Comments(title: 'Comments', comments: post.comments)
-        ],
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(top: 11.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Description(title: 'Description', text: post.body),
+              // UserInfo(title: 'User', userInfo: post.user),
+              Comments(title: 'Comments', comments: post.comments ?? [])
+            ],
+          ),
+        ),
       ),
     );
   }

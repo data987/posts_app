@@ -14,4 +14,12 @@ class ApiProvider {
     final postsEndpoint = ApiEndpoints.posts();
     return await _httpRequest.get(httpClient: httpClient, url: postsEndpoint);
   }
+
+  Future<List<dynamic>> getComments(int postId) async {
+    final commentsEndpoint = ApiEndpoints.comments();
+    return await _httpRequest.get(
+        httpClient: httpClient,
+        url: commentsEndpoint,
+        param: '?postId=$postId');
+  }
 }

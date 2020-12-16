@@ -11,6 +11,8 @@ class PostsInitial extends PostsState {}
 
 class PostsLoading extends PostsState {}
 
+class NoRequests extends PostsState {}
+
 class PostsLoaded extends PostsState {
   PostsLoaded({@required this.posts});
 

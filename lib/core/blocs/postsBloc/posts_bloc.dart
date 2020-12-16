@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:zemoga_posts/core/models/comment_model.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/core/services/repositories/repos/posts_repository.dart';
 
@@ -19,22 +20,74 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     PostsEvent event,
   ) async* {
     if (event is FetchPosts) {
-      yield* _fetchPosts(event);
+      yield* _fetchPosts(event, state);
+    }
+    if (state is PostsLoaded && event is FetchComments) {
+      yield* _fetchComments(event, state);
+    }
+    if (state is PostsLoaded && event is FavoritePost) {
+      yield* _favoritePost(event, state);
     }
   }
 
-  Stream<PostsState> _fetchPosts(FetchPosts event) async* {
+  Stream<PostsState> _fetchPosts(FetchPosts event, PostsState state) async* {
     yield PostsLoading();
     try {
-      final List<PostModel> postList = new List();
-      final response = await postsRepository.getPosts();
-
-      for (var i = 0; i < response.length; i++) {
-        postList.add(PostModel.fromJson(response[i])
-          ..read = i < 20 ? false : true
-          ..body = response[i]['body'].replaceAll(new RegExp(r"[\n]"), " "));
+      if (state is PostsInitial) {
+        final List<PostModel> posts = await postsRepository.getPosts();
+        yield PostsLoaded(posts: posts);
       }
-      yield PostsLoaded(posts: postList);
+      if (state is PostsLoaded) yield PostsLoaded(posts: state.posts);
+    } catch (e) {
+      yield PostsFailed(error: e.toString());
+    }
+  }
+
+  Stream<PostsState> _fetchComments(
+      FetchComments event, PostsLoaded state) async* {
+    yield PostsLoading();
+    try {
+      final isLoaded = state.posts
+          .where((post) => post.id == event.postId)
+          .any((post) => post.comments != null);
+      final List<PostModel> addCommentToPost = [];
+
+      if (!isLoaded) {
+        final List<Comment> getComments =
+            await postsRepository.getComments(event.postId);
+        state.posts.forEach((post) {
+          if (post.id == event.postId) {
+            addCommentToPost.add(post
+              ..comments = getComments
+              ..read = true);
+          } else {
+            addCommentToPost.add(post);
+          }
+        });
+      } else {
+        yield NoRequests();
+      }
+
+      yield PostsLoaded(posts: isLoaded ? state.posts : addCommentToPost);
+    } catch (e) {
+      yield PostsFailed(error: e.toString());
+    }
+  }
+
+  Stream<PostsState> _favoritePost(
+      FavoritePost event, PostsLoaded state) async* {
+    yield PostsLoading();
+    try {
+      final List<PostModel> postsWithFavorites = [];
+      state.posts.forEach((post) {
+        if (post.id == event.postId) {
+          postsWithFavorites.add(post..favorite = !post.favorite);
+        } else {
+          postsWithFavorites.add(post);
+        }
+      });
+
+      yield PostsLoaded(posts: postsWithFavorites);
     } catch (e) {
       yield PostsFailed(error: e.toString());
     }

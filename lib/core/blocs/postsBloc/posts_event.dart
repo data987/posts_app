@@ -9,7 +9,14 @@ abstract class PostsEvent extends Equatable {
 
 class FetchPosts extends PostsEvent {}
 
-class FetchComments extends PostsEvent {}
+class FetchComments extends PostsEvent {
+  FetchComments({@required this.postId});
+
+  final int postId;
+
+  @override
+  List<Object> get props => [postId];
+}
 
 class DeletePosts extends PostsEvent {}
 

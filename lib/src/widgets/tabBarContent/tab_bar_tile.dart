@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zemoga_posts/core/blocs/postsBloc/posts_bloc.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/src/screens/postInfo/post_info_screen.dart';
 
@@ -18,7 +20,10 @@ class TabBarTile extends PlatformStatelessWidget {
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PostInfoScreen(post: post))),
+                    builder: (_) => BlocProvider<PostsBloc>.value(
+                          value: BlocProvider.of<PostsBloc>(context),
+                          child: PostInfoScreen(post: post),
+                        ))),
             child: AndroidTile(post: post)));
   }
 
@@ -30,7 +35,10 @@ class TabBarTile extends PlatformStatelessWidget {
             onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PostInfoScreen(post: post))),
+                    builder: (_) => BlocProvider<PostsBloc>.value(
+                          value: BlocProvider.of<PostsBloc>(context),
+                          child: PostInfoScreen(post: post),
+                        ))),
             child: IosTile(post: post)));
   }
 }
