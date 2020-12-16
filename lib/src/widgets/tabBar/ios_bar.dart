@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 
 class IosBar extends StatefulWidget {
   const IosBar(
-      {Key key, @required this.title, @required this.reload, this.changeIndex})
+      {Key key,
+      @required this.title,
+      @required this.onTap,
+      this.changeIndex,
+      this.postInfo = false})
       : super(key: key);
 
   final String title;
-  final Function reload;
+  final Function onTap;
   final Function changeIndex;
+  final bool postInfo;
 
   @override
   _IosBarState createState() => _IosBarState();
@@ -30,26 +35,43 @@ class _IosBarState extends State<IosBar> {
           actionsForegroundColor: Colors.white,
           backgroundColor: Theme.of(context).primaryColor,
           middle: Text(widget.title, style: TextStyle(color: Colors.white)),
-          trailing: InkWell(
-              onTap: widget.reload, child: Icon(Icons.refresh, size: 25)),
-        ),
-        Expanded(
-          child: Container(
-            width: double.infinity,
-            child: CupertinoSegmentedControl(
-              borderColor: Theme.of(context).primaryColor,
-              selectedColor: Theme.of(context).primaryColor,
-              groupValue: groupValueIndex,
-              onValueChanged: (value) {
-                setState(() {
-                  groupValueIndex = value;
-                  widget.changeIndex(value);
-                });
-              },
-              children: titleTabs,
-            ),
+          leading: widget.postInfo
+              ? Material(
+                  type: MaterialType.transparency,
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Icon(Icons.arrow_back_ios,
+                        size: 25, color: Colors.white),
+                  ),
+                )
+              : null,
+          trailing: Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+                onTap: widget.onTap,
+                child: Icon(widget.postInfo ? Icons.star_border : Icons.refresh,
+                    size: 25, color: Colors.white)),
           ),
-        )
+        ),
+        !widget.postInfo
+            ? Expanded(
+                child: Container(
+                  width: double.infinity,
+                  child: CupertinoSegmentedControl(
+                    borderColor: Theme.of(context).primaryColor,
+                    selectedColor: Theme.of(context).primaryColor,
+                    groupValue: groupValueIndex,
+                    onValueChanged: (value) {
+                      setState(() {
+                        groupValueIndex = value;
+                        widget.changeIndex(value);
+                      });
+                    },
+                    children: titleTabs,
+                  ),
+                ),
+              )
+            : SizedBox(),
       ],
     );
   }

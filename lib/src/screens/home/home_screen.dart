@@ -50,12 +50,12 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _renderTabBar(TargetPlatform platform) {
     return platform == TargetPlatform.iOS
         ? IosBar(
-            title: 'Post',
-            reload: () {},
+            title: 'Posts',
+            onTap: () {},
             changeIndex: (index) => setState(() => groupValueIndex = index),
           )
         : AndroidBar(
-            tabController: _tabController, title: 'Post', reload: () {});
+            tabController: _tabController, title: 'Posts', onTap: () {});
   }
 
   Widget _renderTabView(TargetPlatform platform) {

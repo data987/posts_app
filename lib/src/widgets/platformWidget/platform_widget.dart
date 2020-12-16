@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-abstract class PlatformWidget extends StatelessWidget {
-  const PlatformWidget({Key key}) : super(key: key);
+abstract class PlatformStatelessWidget extends StatelessWidget {
+  const PlatformStatelessWidget({Key key}) : super(key: key);
 
   Widget buildIosWidget(BuildContext context);
   Widget buildAndroidWidget(BuildContext context);
