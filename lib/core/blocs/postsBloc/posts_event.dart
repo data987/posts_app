@@ -9,13 +9,16 @@ abstract class PostsEvent extends Equatable {
 
 class FetchPosts extends PostsEvent {}
 
-class FetchComments extends PostsEvent {
-  FetchComments({@required this.postId});
+class FetchUsers extends PostsEvent {}
+
+class FetchPostInfo extends PostsEvent {
+  FetchPostInfo({@required this.postId, @required this.userId});
 
   final int postId;
+  final int userId;
 
   @override
-  List<Object> get props => [postId];
+  List<Object> get props => [postId, userId];
 }
 
 class DeletePosts extends PostsEvent {}

@@ -20,7 +20,7 @@ class Description extends StatelessWidget {
           Text(title,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           SizedBox(height: 10.0),
-          Text(text, style: TextStyle(fontSize: 12))
+          Text(text, style: TextStyle(fontSize: 13, height: 1.4))
         ],
       ),
     );

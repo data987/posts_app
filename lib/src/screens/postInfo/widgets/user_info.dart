@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zemoga_posts/core/models/user_model.dart';
 import 'package:zemoga_posts/src/utils/size_config.dart';
 
 class UserInfo extends StatelessWidget {
@@ -6,15 +7,17 @@ class UserInfo extends StatelessWidget {
       : super(key: key);
 
   final String title;
-  final dynamic userInfo;
+  final User userInfo;
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Container(
-      padding: EdgeInsets.only(bottom: 10.0),
+      padding:
+          EdgeInsets.only(top: 15.0, bottom: 20.0, left: 20.0, right: 20.0),
       width: SizeConfig.blockSizeHorizontal * 100,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
@@ -27,17 +30,41 @@ class UserInfo extends StatelessWidget {
 
   List<Widget> _userInfo() {
     return [
-      Row(
-        children: [Text('Name:'), Text(userInfo.name)],
+      Padding(
+        padding: EdgeInsets.only(bottom: 6.0),
+        child: Row(
+          children: [
+            Text('Name: ', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(userInfo?.name ?? '')
+          ],
+        ),
       ),
-      Row(
-        children: [Text('Email:'), Text(userInfo.email)],
+      Padding(
+        padding: EdgeInsets.only(bottom: 6.0),
+        child: Row(
+          children: [
+            Text('Email: ', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(userInfo?.email ?? '')
+          ],
+        ),
       ),
-      Row(
-        children: [Text('Phone:'), Text(userInfo.phone)],
+      Padding(
+        padding: EdgeInsets.only(bottom: 6.0),
+        child: Row(
+          children: [
+            Text('Phone: ', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(userInfo?.phone ?? '')
+          ],
+        ),
       ),
-      Row(
-        children: [Text('Website:'), Text(userInfo.website)],
+      Padding(
+        padding: EdgeInsets.only(bottom: 6.0),
+        child: Row(
+          children: [
+            Text('Website: ', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(userInfo?.website ?? '')
+          ],
+        ),
       ),
     ];
   }

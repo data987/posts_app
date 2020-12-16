@@ -14,12 +14,13 @@ class PostsLoading extends PostsState {}
 class NoRequests extends PostsState {}
 
 class PostsLoaded extends PostsState {
-  PostsLoaded({@required this.posts});
+  PostsLoaded({@required this.posts, @required this.users});
 
   final List<PostModel> posts;
+  final List<User> users;
 
   @override
-  List<Object> get props => [posts];
+  List<Object> get props => [posts, users];
 }
 
 class PostsFailed extends PostsState {

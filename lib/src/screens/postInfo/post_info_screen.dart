@@ -18,7 +18,9 @@ class PostInfoScreen extends StatefulWidget {
 class _PostInfoScreenState extends State<PostInfoScreen> {
   @override
   void initState() {
-    context.read<PostsBloc>().add(FetchComments(postId: widget.post.id));
+    context
+        .read<PostsBloc>()
+        .add(FetchPostInfo(postId: widget.post.id, userId: widget.post.userId));
     super.initState();
   }
 

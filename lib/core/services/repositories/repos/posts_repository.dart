@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:zemoga_posts/core/models/comment_model.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
+import 'package:zemoga_posts/core/models/user_model.dart';
 import 'package:zemoga_posts/core/services/api/api_provider.dart';
 
 class PostsRepository {
@@ -29,5 +30,13 @@ class PostsRepository {
         ..body = comments[i]['body'].replaceAll(new RegExp(r"[\n]"), " "));
     }
     return commentList;
+  }
+
+  Future<List<User>> getUsers() async {
+    final List<dynamic> users = await apiProvider.getUsers();
+    final List<User> userList =
+        users.map((user) => User.fromJson(user)).toList();
+
+    return userList;
   }
 }

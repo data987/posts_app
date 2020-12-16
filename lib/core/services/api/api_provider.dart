@@ -22,4 +22,9 @@ class ApiProvider {
         url: commentsEndpoint,
         param: '?postId=$postId');
   }
+
+  Future<List<dynamic>> getUsers() async {
+    final usersEndpoint = ApiEndpoints.users();
+    return await _httpRequest.get(httpClient: httpClient, url: usersEndpoint);
+  }
 }

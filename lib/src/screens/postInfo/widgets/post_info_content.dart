@@ -15,12 +15,12 @@ class PostInfoContent extends StatelessWidget {
     return Container(
       child: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: 11.0),
+          padding: EdgeInsets.only(top: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Description(title: 'Description', text: post.body),
-              // UserInfo(title: 'User', userInfo: post.user),
+              UserInfo(title: 'User', userInfo: post.user),
               Comments(title: 'Comments', comments: post.comments ?? [])
             ],
           ),
