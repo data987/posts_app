@@ -12,7 +12,9 @@ class IosTile extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PostInfoScreen())),
+            context,
+            MaterialPageRoute(
+                builder: (context) => PostInfoScreen(post: post))),
         child: Container(
           padding: EdgeInsets.all(8.0),
           decoration: BoxDecoration(

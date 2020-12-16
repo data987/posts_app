@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:zemoga_posts/src/widgets/widgets.dart';
 
+import 'widgets/post_info_content.dart';
+
 class PostInfoScreen extends StatelessWidget {
-  const PostInfoScreen({Key key}) : super(key: key);
+  const PostInfoScreen({Key key, @required this.post}) : super(key: key);
+
+  final dynamic post;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,7 @@ class PostInfoScreen extends StatelessWidget {
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, 100.0),
           child: _renderTabBar(_platform)),
-      body: Center(child: Text('Holaaa')),
+      body: PostInfoContent(post: post),
     );
   }
 

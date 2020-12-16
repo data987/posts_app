@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zemoga_posts/src/screens/home/home_screen.dart';
+
+import 'src/screens/home/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
