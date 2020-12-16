@@ -26,7 +26,10 @@ class AndroidBar extends StatelessWidget {
       ],
       bottom: TabBar(
         controller: tabController,
-        tabs: [Tab(text: 'All'), Tab(text: 'Favorites')],
+        tabs: [
+          Tab(key: Key('tab-bar-all'), text: 'All'),
+          Tab(key: Key('tab-bar-favorites'), text: 'Favorites')
+        ],
       ),
     );
   }

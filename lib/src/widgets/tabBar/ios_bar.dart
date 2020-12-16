@@ -18,8 +18,8 @@ class _IosBarState extends State<IosBar> {
   int groupValueIndex = 0;
 
   final Map<int, Widget> titleTabs = const <int, Widget>{
-    0: Text('All'),
-    1: Text('Favorites')
+    0: Text('All', key: Key('tab-bar-all')),
+    1: Text('Favorites', key: Key('tab-bar-favorites'))
   };
 
   @override
@@ -28,7 +28,7 @@ class _IosBarState extends State<IosBar> {
       children: [
         CupertinoNavigationBar(
           actionsForegroundColor: Colors.white,
-          backgroundColor: Color(0xFF2bb000),
+          backgroundColor: Theme.of(context).primaryColor,
           middle: Text(widget.title, style: TextStyle(color: Colors.white)),
           trailing: InkWell(
               onTap: widget.reload, child: Icon(Icons.refresh, size: 25)),
@@ -37,8 +37,8 @@ class _IosBarState extends State<IosBar> {
           child: Container(
             width: double.infinity,
             child: CupertinoSegmentedControl(
-              borderColor: Color(0xFF2bb000),
-              selectedColor: Color(0xFF2bb000),
+              borderColor: Theme.of(context).primaryColor,
+              selectedColor: Theme.of(context).primaryColor,
               groupValue: groupValueIndex,
               onValueChanged: (value) {
                 setState(() {

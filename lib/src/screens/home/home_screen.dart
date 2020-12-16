@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zemoga_posts/src/utils/size_config.dart';
 import 'package:zemoga_posts/src/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,25 +20,31 @@ class _HomeScreenState extends State<HomeScreen>
     _tabController = TabController(vsync: this, length: 2);
   }
 
-  static Widget giveCenter(String yourText) {
-    return Center(
-      child: Text(
-        "Text: $yourText",
-        style: TextStyle(color: Colors.blue, fontSize: 20.0),
-      ),
-    );
-  }
-
-  List<Widget> bodies = [giveCenter("Home Page"), giveCenter("Search Page")];
+  List<Widget> bodies = [
+    TabBarContent(
+        key: Key('tab-bar-content-all'),
+        posts: [Text('Mock'), Text('Mock'), Text('Mock')],
+        deletePost: () {}),
+    TabBarContent(
+        key: Key('tab-bar-content-favorites'),
+        posts: [Text('Mock'), Text('Mock')],
+        deletePost: () {})
+  ];
 
   @override
   Widget build(BuildContext context) {
     final _platform = Theme.of(context).platform;
+    SizeConfig().init(context);
     return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size(double.infinity, 100.0),
-            child: _renderTabBar(_platform)),
-        body: _renderTabView(_platform));
+      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: true,
+      appBar: PreferredSize(
+          preferredSize: Size(double.infinity, 100.0),
+          child: _renderTabBar(_platform)),
+      body: _renderTabView(_platform),
+      bottomSheet: _renderBottomButton(_platform),
+      floatingActionButton: _rednerFloatingButton(_platform),
+    );
   }
 
   Widget _renderTabBar(TargetPlatform platform) {
@@ -58,5 +65,32 @@ class _HomeScreenState extends State<HomeScreen>
             controller: _tabController,
             children: bodies,
           );
+  }
+
+  _renderBottomButton(TargetPlatform platform) {
+    return platform == TargetPlatform.iOS
+        ? Container(
+            width: SizeConfig.blockSizeHorizontal * 100,
+            child: FlatButton(
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              child: Text('Delete All', style: TextStyle(fontSize: 16)),
+              onPressed: () => {},
+              color: Colors.red[900],
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(0.0)),
+              textColor: Colors.white,
+            ),
+          )
+        : null;
+  }
+
+  _rednerFloatingButton(TargetPlatform platform) {
+    return platform == TargetPlatform.android
+        ? FloatingActionButton(
+            onPressed: () {},
+            child: Icon(Icons.delete),
+            backgroundColor: Colors.red[900],
+          )
+        : null;
   }
 }
