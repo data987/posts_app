@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zemoga_posts/core/blocs/postsBloc/posts_bloc.dart';
 import 'package:zemoga_posts/src/utils/size_config.dart';
 import 'package:zemoga_posts/src/widgets/widgets.dart';
+
+import 'home_content.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -11,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
+  PostsBloc _postsBloc;
   int groupValueIndex = 0;
   TabController _tabController;
 
@@ -18,18 +23,9 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
+    _postsBloc = BlocProvider.of<PostsBloc>(context);
+    _postsBloc.add(FetchPosts());
   }
-
-  List<Widget> bodies = [
-    TabBarContent(
-        key: Key('tab-bar-content-all'),
-        posts: [Text('Mock'), Text('Mock'), Text('Mock')],
-        deletePost: () {}),
-    TabBarContent(
-        key: Key('tab-bar-content-favorites'),
-        posts: [Text('Mock'), Text('Mock')],
-        deletePost: () {})
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, 100.0),
           child: _renderTabBar(_platform)),
-      body: _renderTabView(_platform),
+      body: _renderPosts(context),
       bottomSheet: _renderBottomButton(_platform),
       floatingActionButton: _rednerFloatingButton(_platform),
     );
@@ -56,15 +52,6 @@ class _HomeScreenState extends State<HomeScreen>
           )
         : AndroidBar(
             tabController: _tabController, title: 'Posts', onTap: () {});
-  }
-
-  Widget _renderTabView(TargetPlatform platform) {
-    return platform == TargetPlatform.iOS
-        ? bodies[groupValueIndex]
-        : TabBarView(
-            controller: _tabController,
-            children: bodies,
-          );
   }
 
   _renderBottomButton(TargetPlatform platform) {
@@ -92,5 +79,21 @@ class _HomeScreenState extends State<HomeScreen>
             backgroundColor: Colors.red[900],
           )
         : null;
+  }
+
+  Widget _renderPosts(BuildContext context) {
+    return BlocBuilder<PostsBloc, PostsState>(
+      builder: (context, state) {
+        if (state is PostsLoaded) {
+          return HomeContent(
+            tabController: _tabController,
+            posts: state.posts,
+            groupValueIndex: groupValueIndex,
+          );
+        } else if (state is PostsFailed)
+          return Center(child: Text(state.error));
+        return Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }

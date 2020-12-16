@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:zemoga_posts/core/models/post_model.dart';
 
 import 'tab_bar_tile.dart';
 
@@ -8,7 +9,7 @@ class TabBarContent extends StatelessWidget {
       {Key key, @required this.posts, @required this.deletePost})
       : super(key: key);
 
-  final List<dynamic> posts;
+  final List<PostModel> posts;
   final Function deletePost;
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/src/widgets/widgets.dart';
 
 import 'widgets/post_info_content.dart';
@@ -6,7 +7,7 @@ import 'widgets/post_info_content.dart';
 class PostInfoScreen extends StatelessWidget {
   const PostInfoScreen({Key key, @required this.post}) : super(key: key);
 
-  final dynamic post;
+  final PostModel post;
 
   @override
   Widget build(BuildContext context) {
