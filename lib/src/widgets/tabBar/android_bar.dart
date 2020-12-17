@@ -31,7 +31,7 @@ class _AndroidBarState extends State<AndroidBar> {
     return AppBar(
       title: !widget.postInfo
           ? Text(widget.title, style: TextStyle(color: Colors.white))
-          : '',
+          : Text(''),
       leading: widget.postInfo
           ? Material(
               type: MaterialType.transparency,

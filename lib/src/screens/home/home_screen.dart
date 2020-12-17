@@ -50,11 +50,12 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _renderPosts(BuildContext context) {
+    var _iosPlatform = getPlatform(context) == TargetPlatform.iOS;
     return BlocBuilder<PostsBloc, PostsState>(
       builder: (context, state) {
         if (state is PostsLoaded) {
           return Padding(
-            padding: EdgeInsets.only(bottom: 50.0),
+            padding: EdgeInsets.only(bottom: _iosPlatform ? 50.0 : 0.0),
             child: HomeContent(
               tabController: _tabController,
               posts: state.posts,

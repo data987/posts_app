@@ -27,7 +27,8 @@ class PlatformBar extends PlatformStatelessWidget {
         tabController: androidTabController,
         title: title,
         onTap: onTap,
-        postInfo: postInfo);
+        postInfo: postInfo,
+        post: post);
   }
 
   @override
