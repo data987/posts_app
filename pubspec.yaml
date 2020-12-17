@@ -25,7 +25,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   bloc_test: ^7.1.0
-  test_coverage: ^0.4.2
 
 flutter:
   uses-material-design: true
