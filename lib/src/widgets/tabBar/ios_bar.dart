@@ -8,7 +8,7 @@ class IosBar extends StatefulWidget {
       @required this.title,
       @required this.onTap,
       this.changeIndex,
-      this.postInfo = false,
+      this.postInfo,
       this.post})
       : super(key: key);
 
@@ -42,16 +42,7 @@ class _IosBarState extends State<IosBar> {
           actionsForegroundColor: Colors.white,
           backgroundColor: Theme.of(context).primaryColor,
           middle: Text(widget.title, style: TextStyle(color: Colors.white)),
-          leading: widget.postInfo
-              ? Material(
-                  type: MaterialType.transparency,
-                  child: InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Icon(Icons.arrow_back_ios,
-                        size: 25, color: Colors.white),
-                  ),
-                )
-              : null,
+          leading: _loadArrowBack(),
           trailing: Material(
             type: MaterialType.transparency,
             child: InkWell(
@@ -60,26 +51,42 @@ class _IosBarState extends State<IosBar> {
                     size: 25, color: Colors.white)),
           ),
         ),
-        !widget.postInfo
-            ? Expanded(
-                child: Container(
-                  width: double.infinity,
-                  child: CupertinoSegmentedControl(
-                    borderColor: Theme.of(context).primaryColor,
-                    selectedColor: Theme.of(context).primaryColor,
-                    groupValue: groupValueIndex,
-                    onValueChanged: (value) {
-                      setState(() {
-                        groupValueIndex = value;
-                        widget.changeIndex(value);
-                      });
-                    },
-                    children: titleTabs,
-                  ),
-                ),
-              )
-            : SizedBox(),
+        _loadTabBar()
       ],
     );
+  }
+
+  Widget _loadArrowBack() {
+    return widget.postInfo
+        ? Material(
+            type: MaterialType.transparency,
+            child: InkWell(
+              onTap: () => Navigator.pop(context),
+              child: Icon(Icons.arrow_back_ios, size: 25, color: Colors.white),
+            ),
+          )
+        : SizedBox();
+  }
+
+  _loadTabBar() {
+    return !widget.postInfo
+        ? Expanded(
+            child: Container(
+              width: double.infinity,
+              child: CupertinoSegmentedControl(
+                borderColor: Theme.of(context).primaryColor,
+                selectedColor: Theme.of(context).primaryColor,
+                groupValue: groupValueIndex,
+                onValueChanged: (value) {
+                  setState(() {
+                    groupValueIndex = value;
+                    widget.changeIndex(value);
+                  });
+                },
+                children: titleTabs,
+              ),
+            ),
+          )
+        : SizedBox();
   }
 }

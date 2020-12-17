@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+getPlatform(context) => Theme.of(context).platform;
+
 abstract class PlatformStatelessWidget extends StatelessWidget {
   const PlatformStatelessWidget({Key key}) : super(key: key);
 
@@ -8,9 +10,7 @@ abstract class PlatformStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _platform = Theme.of(context).platform;
-
-    return _platform == TargetPlatform.iOS
+    return getPlatform(context) == TargetPlatform.iOS
         ? buildIosWidget(context)
         : buildAndroidWidget(context);
   }
