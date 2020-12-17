@@ -11,8 +11,6 @@ import 'package:zemoga_posts/src/widgets/widgets.dart';
 import '../../../base_tester.dart';
 import '../../../mock_responses.dart';
 
-class MockPostsBloc extends MockBloc<PostsState> implements PostsBloc {}
-
 void main() {
   PostsBloc mockPostsBloc;
 

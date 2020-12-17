@@ -8,7 +8,7 @@ class ApiProvider {
   http.Client httpClient;
   HttpRequests _httpRequest = HttpRequests();
 
-  ApiProvider({@required this.httpClient});
+  ApiProvider({@required this.httpClient}) : assert(httpClient != null);
 
   Future<List<dynamic>> getPosts() async {
     final postsEndpoint = ApiEndpoints.posts();

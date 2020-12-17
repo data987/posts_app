@@ -48,6 +48,7 @@ class TabBarContent extends StatelessWidget {
 
   _buildItem({context, PostModel post, int index}) {
     return Slidable(
+        key: Key('tab-bar-content-slidable'),
         actionPane: SlidableDrawerActionPane(),
         child: PlatformTabBarTile(
           post: post,
@@ -61,6 +62,7 @@ class TabBarContent extends StatelessWidget {
         ),
         secondaryActions: <Widget>[
           IconSlideAction(
+              key: Key('tab-bar-content-delete-posts'),
               caption: 'Delete',
               color: Colors.red,
               icon: Icons.delete,

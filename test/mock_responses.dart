@@ -113,7 +113,8 @@ List<PostModel> mockPostsComments = [
       read: true,
       favorite: false,
       userId: 1,
-      comments: mockComments),
+      comments: mockComments,
+      user: mockUsers[0]),
   PostModel(
       id: 2,
       title: 'title 1',
