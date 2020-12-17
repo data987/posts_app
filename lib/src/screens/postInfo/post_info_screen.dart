@@ -26,13 +26,19 @@ class _PostInfoScreenState extends State<PostInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _platform = Theme.of(context).platform;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: true,
       appBar: PreferredSize(
           preferredSize: Size(double.infinity, 45.0),
-          child: _renderTabBar(_platform)),
+          child: PlatformBar(
+            title: 'Post',
+            onTap: () => context
+                .read<PostsBloc>()
+                .add(FavoritePost(postId: widget.post.id)),
+            postInfo: true,
+            post: widget.post,
+          )),
       body: BlocBuilder<PostsBloc, PostsState>(builder: (context, state) {
         if (state is PostsLoaded) {
           return PostInfoContent(post: widget.post);
@@ -40,22 +46,5 @@ class _PostInfoScreenState extends State<PostInfoScreen> {
         return Center(child: CircularProgressIndicator());
       }),
     );
-  }
-
-  Widget _renderTabBar(TargetPlatform platform) {
-    return platform == TargetPlatform.iOS
-        ? IosBar(
-            title: 'Post',
-            onTap: () => context
-                .read<PostsBloc>()
-                .add(FavoritePost(postId: widget.post.id)),
-            postInfo: true,
-            post: widget.post)
-        : AndroidBar(
-            title: 'Post',
-            onTap: () => context
-                .read<PostsBloc>()
-                .add(FavoritePost(postId: widget.post.id)),
-            postInfo: true);
   }
 }

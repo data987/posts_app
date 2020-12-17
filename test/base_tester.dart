@@ -1,10 +1,9 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zemoga_posts/core/blocs/postsBloc/posts_bloc.dart';
-import 'package:zemoga_posts/core/services/repositories/repos/posts_repository.dart';
 
-Widget baseTester(Widget child, PostsRepository postsRepository) {
-  return BlocProvider<PostsBloc>(
-      create: (context) => PostsBloc(postsRepository: postsRepository),
-      child: MaterialApp(home: child));
+class MockPostsBloc extends MockBloc<PostsState> implements PostsBloc {}
+
+Widget baseTester(Widget child) {
+  return MaterialApp(home: child);
 }

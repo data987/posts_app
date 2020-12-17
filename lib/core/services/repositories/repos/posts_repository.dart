@@ -7,7 +7,7 @@ import 'package:zemoga_posts/core/services/api/api_provider.dart';
 class PostsRepository {
   final ApiProvider apiProvider;
 
-  PostsRepository({@required this.apiProvider});
+  PostsRepository({@required this.apiProvider}) : assert(apiProvider != null);
 
   Future<List<PostModel>> getPosts() async {
     final List<PostModel> postList = new List();

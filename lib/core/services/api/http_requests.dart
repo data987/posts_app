@@ -8,26 +8,6 @@ import 'custom_exceptions.dart';
 import 'responses.dart';
 
 class HttpRequests {
-  Future<dynamic> post(
-      {@required http.Client httpClient,
-      @required String url,
-      dynamic body,
-      String token}) async {
-    var response;
-    try {
-      final request =
-          await httpClient.post(url, body: jsonEncode(body), headers: {
-        "Accept": "application/json",
-        "content-type": "application/json",
-        "Authorization": 'Bearer $token',
-      });
-      response = ApiResponses.apiResponse(request);
-    } on NotFoundException {
-      throw FetchDataException('Endpoint not exists');
-    }
-    return response;
-  }
-
   Future<dynamic> get(
       {@required http.Client httpClient,
       @required String url,

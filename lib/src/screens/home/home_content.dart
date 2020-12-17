@@ -25,8 +25,7 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _platform = Theme.of(context).platform;
-    return _platform == TargetPlatform.iOS
+    return getPlatform(context) == TargetPlatform.iOS
         ? content()[groupValueIndex]
         : TabBarView(
             controller: tabController,

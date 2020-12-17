@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:zemoga_posts/core/blocs/postsBloc/posts_bloc.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
+import 'package:zemoga_posts/src/screens/postInfo/post_info_screen.dart';
 
-import 'tab_bar_tile.dart';
+import 'platform_tab_bar_tile.dart';
 
 class TabBarContent extends StatelessWidget {
   const TabBarContent({Key key, @required this.posts}) : super(key: key);
@@ -47,10 +48,21 @@ class TabBarContent extends StatelessWidget {
 
   _buildItem({context, PostModel post, int index}) {
     return Slidable(
+        key: Key('tab-bar-content-slidable'),
         actionPane: SlidableDrawerActionPane(),
-        child: TabBarTile(post: post),
+        child: PlatformTabBarTile(
+          post: post,
+          onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => BlocProvider<PostsBloc>.value(
+                        value: BlocProvider.of<PostsBloc>(context),
+                        child: PostInfoScreen(post: post),
+                      ))),
+        ),
         secondaryActions: <Widget>[
           IconSlideAction(
+              key: Key('tab-bar-content-delete-posts'),
               caption: 'Delete',
               color: Colors.red,
               icon: Icons.delete,

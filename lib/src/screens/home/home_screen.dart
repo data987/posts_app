@@ -5,6 +5,7 @@ import 'package:zemoga_posts/src/utils/size_config.dart';
 import 'package:zemoga_posts/src/widgets/widgets.dart';
 
 import 'home_content.dart';
+import 'widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
@@ -29,68 +30,37 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    final _platform = Theme.of(context).platform;
     SizeConfig().init(context);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: true,
-      appBar: PreferredSize(
-          preferredSize: Size(double.infinity, 100.0),
-          child: _renderTabBar(_platform)),
-      body: _renderPosts(context),
-      bottomSheet: _renderBottomButton(_platform),
-      floatingActionButton: _rednerFloatingButton(_platform),
-    );
-  }
-
-  Widget _renderTabBar(TargetPlatform platform) {
-    return platform == TargetPlatform.iOS
-        ? IosBar(
-            title: 'Posts',
-            onTap: () => context.read<PostsBloc>().add(FetchPosts()),
-            changeIndex: (index) => setState(() => groupValueIndex = index),
-          )
-        : AndroidBar(
-            tabController: _tabController,
-            title: 'Posts',
-            onTap: () => context.read<PostsBloc>().add(FetchPosts()));
-  }
-
-  _renderBottomButton(TargetPlatform platform) {
-    return platform == TargetPlatform.iOS
-        ? Container(
-            width: SizeConfig.blockSizeHorizontal * 100,
-            child: FlatButton(
-              padding: EdgeInsets.symmetric(vertical: 15.0),
-              child: Text('Delete All', style: TextStyle(fontSize: 16)),
-              onPressed: () => context.read<PostsBloc>().add(DeletePosts()),
-              color: Colors.red[900],
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(0.0)),
-              textColor: Colors.white,
-            ),
-          )
-        : null;
-  }
-
-  _rednerFloatingButton(TargetPlatform platform) {
-    return platform == TargetPlatform.android
-        ? FloatingActionButton(
-            onPressed: () => context.read<PostsBloc>().add(DeletePosts()),
-            child: Icon(Icons.delete),
-            backgroundColor: Colors.red[900],
-          )
-        : null;
+        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomPadding: true,
+        appBar: PreferredSize(
+            preferredSize: Size(double.infinity, 100.0),
+            child: PlatformBar(
+                title: 'Post',
+                onTap: () => context.read<PostsBloc>().add(FetchPosts()),
+                androidTabController: _tabController,
+                iosChangeIndex: (index) =>
+                    setState(() => groupValueIndex = index))),
+        body: _renderPosts(context),
+        bottomSheet: PlatformBottomButton(
+            deletePosts: () => context.read<PostsBloc>().add(DeletePosts())),
+        floatingActionButton: PlatformFloatingButton(
+            deletePosts: () => context.read<PostsBloc>().add(DeletePosts())));
   }
 
   Widget _renderPosts(BuildContext context) {
+    var _iosPlatform = getPlatform(context) == TargetPlatform.iOS;
     return BlocBuilder<PostsBloc, PostsState>(
       builder: (context, state) {
         if (state is PostsLoaded) {
-          return HomeContent(
-            tabController: _tabController,
-            posts: state.posts,
-            groupValueIndex: groupValueIndex,
+          return Padding(
+            padding: EdgeInsets.only(bottom: _iosPlatform ? 50.0 : 0.0),
+            child: HomeContent(
+              tabController: _tabController,
+              posts: state.posts,
+              groupValueIndex: groupValueIndex,
+            ),
           );
         } else if (state is PostsFailed) {
           return Center(child: Text(state.error));
