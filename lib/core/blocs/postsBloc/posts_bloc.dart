@@ -29,12 +29,18 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     if (state is PostsLoaded && event is FavoritePost) {
       yield* _favoritePost(event, state);
     }
+    if (state is PostsLoaded && event is DeletePosts) {
+      yield* _deletePosts(event, state);
+    }
+    if (state is PostsLoaded && event is DeletePost) {
+      yield* _deletePostById(event, state);
+    }
   }
 
   Stream<PostsState> _fetchPosts(FetchPosts event, PostsState state) async* {
     yield PostsLoading();
     try {
-      if (state is PostsInitial) {
+      if (state is PostsInitial || state is PostsDeleted) {
         final List<PostModel> posts = await postsRepository.getPosts();
         yield PostsLoaded(posts: posts, users: new List());
       }
@@ -106,5 +112,27 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         users.length > 0 ? users : await postsRepository.getUsers();
     final User getUser = getUsers.where((user) => user.id == userId).first;
     return getUser;
+  }
+
+  Stream<PostsState> _deletePosts(DeletePosts event, PostsLoaded state) async* {
+    yield PostsLoading();
+    try {
+      yield PostsLoaded(posts: [], users: state.users);
+      yield PostsDeleted();
+    } catch (e) {
+      yield PostsFailed(error: e.toString());
+    }
+  }
+
+  Stream<PostsState> _deletePostById(
+      DeletePost event, PostsLoaded state) async* {
+    yield PostsLoading();
+    try {
+      state.posts.removeWhere((post) => post.id == event.postId);
+      yield PostDeleted();
+      yield PostsLoaded(posts: state.posts, users: state.users);
+    } catch (e) {
+      yield PostsFailed(error: e.toString());
+    }
   }
 }
