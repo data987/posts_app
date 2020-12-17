@@ -2,8 +2,6 @@
 
 An app that consumes [{JSON} Placeholder](https://jsonplaceholder.typicode.com/) API and It shows the posts with their own content like **description, user info and comments**. The user can save his favorites posts or delete them.
 
-![Coverage](https://raw.githubusercontent.com/data987/posts_app/master/coverage_badge.svg?sanitize=true)
-
 ### Cloning
 
 Clone the repo and use this flutter version `Flutter 1.22.5 • channel stable`
