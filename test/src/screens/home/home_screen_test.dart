@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -54,7 +53,7 @@ void main() {
           (tester) async {
         debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
         when(mockPostsBloc.state)
-            .thenReturn(PostsLoaded(posts: mockPosts, users: []));
+            .thenReturn(PostsLoaded(postsModel: mockPosts, users: []));
 
         await tester.pumpWidget(baseTester(baseMockWidget()));
         expect(find.byType(HomeContent), findsOneWidget);
@@ -72,7 +71,7 @@ void main() {
           (tester) async {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         when(mockPostsBloc.state)
-            .thenReturn(PostsLoaded(posts: mockPosts, users: []));
+            .thenReturn(PostsLoaded(postsModel: mockPosts, users: []));
 
         await tester.pumpWidget(baseTester(baseMockWidget()));
         expect(find.byKey(Key('tab-bar-content-all')), findsOneWidget);

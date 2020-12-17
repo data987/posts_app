@@ -10,7 +10,7 @@ class HomeContent extends StatelessWidget {
       @required this.groupValueIndex})
       : super(key: key);
 
-  final List<PostModel> posts;
+  final List<Post> posts;
   final TabController tabController;
   final int groupValueIndex;
 

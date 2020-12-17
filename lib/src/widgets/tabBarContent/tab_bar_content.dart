@@ -10,7 +10,7 @@ import 'platform_tab_bar_tile.dart';
 class TabBarContent extends StatelessWidget {
   const TabBarContent({Key key, @required this.posts}) : super(key: key);
 
-  final List<PostModel> posts;
+  final List<Post> posts;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class TabBarContent extends StatelessWidget {
         BlocProvider.of<PostsBloc>(context).add(DeletePost(postId: user.id)));
   }
 
-  _buildItem({context, PostModel post, int index}) {
+  _buildItem({context, Post post, int index}) {
     return Slidable(
         key: Key('tab-bar-content-slidable'),
         actionPane: SlidableDrawerActionPane(),

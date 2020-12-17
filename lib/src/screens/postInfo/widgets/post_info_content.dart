@@ -8,7 +8,7 @@ import 'user_info.dart';
 class PostInfoContent extends StatelessWidget {
   const PostInfoContent({Key key, @required this.post}) : super(key: key);
 
-  final PostModel post;
+  final Post post;
 
   @override
   Widget build(BuildContext context) {

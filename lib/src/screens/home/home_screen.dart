@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen>
             padding: EdgeInsets.only(bottom: _iosPlatform ? 50.0 : 0.0),
             child: HomeContent(
               tabController: _tabController,
-              posts: state.posts,
+              posts: state.postsModel.posts,
               groupValueIndex: groupValueIndex,
             ),
           );

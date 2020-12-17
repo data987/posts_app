@@ -8,7 +8,7 @@ class PlatformTabBarTile extends PlatformStatelessWidget {
   const PlatformTabBarTile({Key key, @required this.post, @required this.onTap})
       : super(key: key);
 
-  final PostModel post;
+  final Post post;
   final Function onTap;
 
   @override

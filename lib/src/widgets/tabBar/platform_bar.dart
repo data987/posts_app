@@ -17,7 +17,7 @@ class PlatformBar extends PlatformStatelessWidget {
   final String title;
   final Function onTap;
   final bool postInfo;
-  final PostModel post;
+  final Post post;
   final Function iosChangeIndex;
   final TabController androidTabController;
 

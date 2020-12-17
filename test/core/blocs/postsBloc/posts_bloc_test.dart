@@ -1,7 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:zemoga_posts/core/blocs/postsBloc/posts_bloc.dart';
+import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/core/services/repositories/repositories.dart';
 
 import '../../../mock_responses.dart';
@@ -10,11 +13,13 @@ class MockPostsBloc extends MockBloc<PostsState> implements PostsBloc {}
 
 class MockPostsRepository extends Mock implements PostsRepository {}
 
-void main() {
+void main() async {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build();
   PostsBloc mockPostsBloc;
   MockPostsRepository mockPostsRepository;
 
-  setUp(() {
+  setUp(() async {
     mockPostsBloc = MockPostsBloc();
     mockPostsRepository = MockPostsRepository();
   });
@@ -26,8 +31,9 @@ void main() {
   group('Test PostsBloc', () {
     test('PostsLoaded state is correct', () {
       when(mockPostsBloc.state)
-          .thenReturn(PostsLoaded(posts: mockPosts, users: []));
-      expect(mockPostsBloc.state, PostsLoaded(posts: mockPosts, users: []));
+          .thenReturn(PostsLoaded(postsModel: mockPosts, users: []));
+      expect(
+          mockPostsBloc.state, PostsLoaded(postsModel: mockPosts, users: []));
     });
 
     test('Assert post repository should return an assertion error', () {
@@ -44,7 +50,7 @@ void main() {
         return PostsBloc(postsRepository: mockPostsRepository);
       },
       act: (bloc) => bloc.add(FetchPosts()),
-      expect: [PostsLoading(), PostsLoaded(posts: mockPosts, users: [])],
+      expect: [PostsLoading(), PostsLoaded(postsModel: mockPosts, users: [])],
     );
 
     blocTest<PostsBloc, PostsState>(
@@ -63,9 +69,9 @@ void main() {
       },
       expect: [
         PostsLoading(),
-        PostsLoaded(posts: mockPosts, users: []),
+        PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
-        PostsLoaded(posts: mockPosts, users: [])
+        PostsLoaded(postsModel: mockPosts, users: [])
       ],
     );
 
@@ -85,9 +91,9 @@ void main() {
       },
       expect: [
         PostsLoading(),
-        PostsLoaded(posts: mockPosts, users: []),
+        PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
-        PostsLoaded(posts: mockPosts, users: [])
+        PostsLoaded(postsModel: mockPosts, users: [])
       ],
     );
 
@@ -107,9 +113,9 @@ void main() {
       },
       expect: [
         PostsLoading(),
-        PostsLoaded(posts: mockPosts, users: []),
+        PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
-        PostsLoaded(posts: [], users: []),
+        PostsLoaded(postsModel: PostModel(posts: []), users: []),
         PostsDeleted()
       ],
     );
@@ -130,10 +136,10 @@ void main() {
       },
       expect: [
         PostsLoading(),
-        PostsLoaded(posts: mockPosts, users: []),
+        PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
         PostDeleted(),
-        PostsLoaded(posts: mockPosts, users: [])
+        PostsLoaded(postsModel: mockPosts, users: [])
       ],
     );
   });

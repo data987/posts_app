@@ -9,7 +9,7 @@ import 'widgets/post_info_content.dart';
 class PostInfoScreen extends StatefulWidget {
   const PostInfoScreen({Key key, @required this.post}) : super(key: key);
 
-  final PostModel post;
+  final Post post;
 
   @override
   _PostInfoScreenState createState() => _PostInfoScreenState();
