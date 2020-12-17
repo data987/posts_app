@@ -16,12 +16,10 @@ class HomeContent extends StatelessWidget {
 
   List<Widget> content() {
     return [
-      TabBarContent(
-          key: Key('tab-bar-content-all'), posts: posts, deletePost: () {}),
+      TabBarContent(key: Key('tab-bar-content-all'), posts: posts),
       TabBarContent(
           key: Key('tab-bar-content-favorites'),
-          posts: posts.where((post) => post.favorite).toList(),
-          deletePost: () {})
+          posts: posts.where((post) => post.favorite).toList())
     ];
   }
 

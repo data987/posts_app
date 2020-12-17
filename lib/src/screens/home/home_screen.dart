@@ -47,11 +47,13 @@ class _HomeScreenState extends State<HomeScreen>
     return platform == TargetPlatform.iOS
         ? IosBar(
             title: 'Posts',
-            onTap: () {},
+            onTap: () => context.read<PostsBloc>().add(FetchPosts()),
             changeIndex: (index) => setState(() => groupValueIndex = index),
           )
         : AndroidBar(
-            tabController: _tabController, title: 'Posts', onTap: () {});
+            tabController: _tabController,
+            title: 'Posts',
+            onTap: () => context.read<PostsBloc>().add(FetchPosts()));
   }
 
   _renderBottomButton(TargetPlatform platform) {
@@ -61,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen>
             child: FlatButton(
               padding: EdgeInsets.symmetric(vertical: 15.0),
               child: Text('Delete All', style: TextStyle(fontSize: 16)),
-              onPressed: () => {},
+              onPressed: () => context.read<PostsBloc>().add(DeletePosts()),
               color: Colors.red[900],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(0.0)),
@@ -74,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen>
   _rednerFloatingButton(TargetPlatform platform) {
     return platform == TargetPlatform.android
         ? FloatingActionButton(
-            onPressed: () {},
+            onPressed: () => context.read<PostsBloc>().add(DeletePosts()),
             child: Icon(Icons.delete),
             backgroundColor: Colors.red[900],
           )
@@ -90,8 +92,11 @@ class _HomeScreenState extends State<HomeScreen>
             posts: state.posts,
             groupValueIndex: groupValueIndex,
           );
-        } else if (state is PostsFailed)
+        } else if (state is PostsFailed) {
           return Center(child: Text(state.error));
+        } else if (state is PostsDeleted) {
+          return Center(child: Text('There are no posts here!'));
+        }
         return Center(child: CircularProgressIndicator());
       },
     );

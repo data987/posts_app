@@ -9,8 +9,6 @@ abstract class PostsEvent extends Equatable {
 
 class FetchPosts extends PostsEvent {}
 
-class FetchUsers extends PostsEvent {}
-
 class FetchPostInfo extends PostsEvent {
   FetchPostInfo({@required this.postId, @required this.userId});
 
