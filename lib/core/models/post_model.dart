@@ -16,6 +16,10 @@ class PostModel {
     this.posts,
   });
 
+  PostModel copyWith({List<Post> posts}) {
+    return PostModel(posts: posts ?? this.posts);
+  }
+
   List<Post> posts;
 
   factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
@@ -30,10 +34,6 @@ class PostModel {
             : List<dynamic>.from(posts.map((x) => x.toJson())),
       };
 }
-
-Post postFromJson(String str) => Post.fromJson(json.decode(str));
-
-String postToJson(Post data) => json.encode(data.toJson());
 
 class Post {
   Post({

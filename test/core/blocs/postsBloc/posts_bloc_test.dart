@@ -1,12 +1,11 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:zemoga_posts/core/blocs/postsBloc/posts_bloc.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/core/services/repositories/repositories.dart';
 
+import '../../../base_tester.dart';
 import '../../../mock_responses.dart';
 
 class MockPostsBloc extends MockBloc<PostsState> implements PostsBloc {}
@@ -14,8 +13,7 @@ class MockPostsBloc extends MockBloc<PostsState> implements PostsBloc {}
 class MockPostsRepository extends Mock implements PostsRepository {}
 
 void main() async {
-  TestWidgetsFlutterBinding.ensureInitialized();
-  HydratedBloc.storage = await HydratedStorage.build();
+  initHydratedBloc();
   PostsBloc mockPostsBloc;
   MockPostsRepository mockPostsRepository;
 
@@ -71,7 +69,8 @@ void main() async {
         PostsLoading(),
         PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
-        PostsLoaded(postsModel: mockPosts, users: [])
+        NoRequests(),
+        PostsLoaded(postsModel: mockPostsComments, users: [])
       ],
     );
 
@@ -93,7 +92,14 @@ void main() async {
         PostsLoading(),
         PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
-        PostsLoaded(postsModel: mockPosts, users: [])
+        isA<PostsLoaded>().having((p) => p.users, 'users', []).having(
+            (p) => p.postsModel,
+            'postsModel',
+            isA<PostModel>().having(
+                (p) => p.posts,
+                'posts',
+                isA<List<Post>>().having((p) => p[0].favorite, 'favorite',
+                    !mockPostsComments.posts[0].favorite)))
       ],
     );
 
@@ -115,7 +121,11 @@ void main() async {
         PostsLoading(),
         PostsLoaded(postsModel: mockPosts, users: []),
         PostsLoading(),
-        PostsLoaded(postsModel: PostModel(posts: []), users: []),
+        isA<PostsLoaded>().having((p) => p.users, 'users', []).having(
+            (p) => p.postsModel,
+            'postsModel',
+            isA<PostModel>()
+                .having((p) => p.posts, 'posts', mockDeletePosts.posts = [])),
         PostsDeleted()
       ],
     );

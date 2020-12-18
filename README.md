@@ -28,6 +28,10 @@ git clone https://github.com/data987/posts_app.git
 
 - `Invoke Run > Start Debugging or press F5. (Visual Studio Code)`.
 
+3. If you want to run the tests run:
+
+- `flutter tests`
+
 ### Architecture
 
 This app use the **Bloc pattern** for the architecture, BLoC stands for **Business Logic Component**
@@ -110,3 +114,12 @@ This package works with **flutter bloc** and mockito
 
 - Easy to test **flutter bloc** states
 - It can create Bloc mocks
+
+##### 7. hydrated_bloc - [package link](https://pub.dev/packages/hydrated_bloc)
+
+This package persists the data in the storage and restores bloc states
+
+###### Pros
+
+- Easy to setup with bloc
+- I can create a mock for testing in blocTests

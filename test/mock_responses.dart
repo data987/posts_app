@@ -7,30 +7,30 @@ PostModel mockPosts = PostModel(posts: [
       id: 1,
       title: 'title 1',
       body: 'text 1',
-      read: true,
+      read: false,
       favorite: false,
       userId: 1),
   Post(
-      id: 1,
-      title: 'title 1',
-      body: 'text 1',
-      read: true,
-      favorite: false,
-      userId: 1),
-  Post(
-      id: 1,
+      id: 2,
       title: 'title 1',
       body: 'text 1',
       read: false,
-      favorite: true,
+      favorite: false,
       userId: 2),
   Post(
-      id: 1,
+      id: 3,
       title: 'title 1',
       body: 'text 1',
       read: false,
-      favorite: true,
-      userId: 2)
+      favorite: false,
+      userId: 2),
+  Post(
+      id: 4,
+      title: 'title 1',
+      body: 'text 1',
+      read: false,
+      favorite: false,
+      userId: 3),
 ]);
 
 List<Comment> mockComments = [
@@ -105,35 +105,6 @@ List<User> mockUsers = [
           suite: 'none')),
 ];
 
-PostModel mockPostsComments = PostModel(posts: [
-  Post(
-      id: 1,
-      title: 'title 1',
-      body: 'text 1',
-      read: true,
-      favorite: false,
-      userId: 1,
-      comments: mockComments,
-      user: mockUsers[0]),
-  Post(
-      id: 2,
-      title: 'title 1',
-      body: 'text 1',
-      read: false,
-      favorite: false,
-      userId: 3),
-  Post(
-      id: 3,
-      title: 'title 1',
-      body: 'text 1',
-      read: false,
-      favorite: true,
-      userId: 2),
-  Post(
-      id: 4,
-      title: 'title 1',
-      body: 'text 1',
-      read: false,
-      favorite: true,
-      userId: 2)
-]);
+PostModel mockPostsComments = mockPosts..posts[0].comments = mockComments;
+PostModel mockDeletePosts =
+    mockPosts.copyWith(posts: mockPosts.posts..first.comments = mockComments);
