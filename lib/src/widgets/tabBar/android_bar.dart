@@ -15,7 +15,7 @@ class AndroidBar extends StatefulWidget {
   final Function onTap;
   final TabController tabController;
   final bool postInfo;
-  final PostModel post;
+  final Post post;
 
   @override
   _AndroidBarState createState() => _AndroidBarState();

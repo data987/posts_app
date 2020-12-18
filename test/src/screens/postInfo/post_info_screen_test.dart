@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,7 +25,7 @@ void main() {
   baseMockWidget({key}) {
     return BlocProvider.value(
         value: mockPostsBloc,
-        child: PostInfoScreen(key: key, post: mockPostsComments[0]));
+        child: PostInfoScreen(key: key, post: mockPostsComments.posts[0]));
   }
 
   testWidgets('PostInfoScreen exists', (tester) async {
@@ -48,7 +47,7 @@ void main() {
         (tester) async {
       expect(find.byType(PostInfoContent), findsNothing);
       when(mockPostsBloc.state)
-          .thenReturn(PostsLoaded(posts: mockPosts, users: []));
+          .thenReturn(PostsLoaded(postsModel: mockPosts, users: []));
       await tester.pumpWidget(baseTester(baseMockWidget()));
       expect(find.byType(PostInfoContent), findsOneWidget);
     });

@@ -8,8 +8,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:zemoga_posts/myapp.dart';
+import './base_tester.dart';
 
 void main() {
+  initHydratedBloc();
   testWidgets('MyApp exists', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp(key: Key('myapp home')));
 

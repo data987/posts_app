@@ -9,16 +9,18 @@ class PostsRepository {
 
   PostsRepository({@required this.apiProvider}) : assert(apiProvider != null);
 
-  Future<List<PostModel>> getPosts() async {
-    final List<PostModel> postList = new List();
+  Future<PostModel> getPosts() async {
+    PostModel postModel;
+    final List<Post> postList = [];
     final List<dynamic> posts = await apiProvider.getPosts();
 
     for (var i = 0; i < posts.length; i++) {
-      postList.add(PostModel.fromJson(posts[i])
+      postList.add(Post.fromJson(posts[i])
         ..read = i < 20 ? false : true
         ..body = posts[i]['body'].replaceAll(new RegExp(r"[\n]"), " "));
     }
-    return postList;
+    postModel = new PostModel(posts: postList);
+    return postModel;
   }
 
   Future<List<Comment>> getComments(int postId) async {

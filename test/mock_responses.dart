@@ -2,36 +2,36 @@ import 'package:zemoga_posts/core/models/comment_model.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/core/models/user_model.dart';
 
-List<PostModel> mockPosts = [
-  PostModel(
-      id: 1,
-      title: 'title 1',
-      body: 'text 1',
-      read: true,
-      favorite: false,
-      userId: 1),
-  PostModel(
-      id: 1,
-      title: 'title 1',
-      body: 'text 1',
-      read: true,
-      favorite: false,
-      userId: 1),
-  PostModel(
+PostModel mockPosts = PostModel(posts: [
+  Post(
       id: 1,
       title: 'title 1',
       body: 'text 1',
       read: false,
-      favorite: true,
+      favorite: false,
+      userId: 1),
+  Post(
+      id: 2,
+      title: 'title 1',
+      body: 'text 1',
+      read: false,
+      favorite: false,
       userId: 2),
-  PostModel(
-      id: 1,
+  Post(
+      id: 3,
       title: 'title 1',
       body: 'text 1',
       read: false,
-      favorite: true,
-      userId: 2)
-];
+      favorite: false,
+      userId: 2),
+  Post(
+      id: 4,
+      title: 'title 1',
+      body: 'text 1',
+      read: false,
+      favorite: false,
+      userId: 3),
+]);
 
 List<Comment> mockComments = [
   Comment(
@@ -105,35 +105,6 @@ List<User> mockUsers = [
           suite: 'none')),
 ];
 
-List<PostModel> mockPostsComments = [
-  PostModel(
-      id: 1,
-      title: 'title 1',
-      body: 'text 1',
-      read: true,
-      favorite: false,
-      userId: 1,
-      comments: mockComments,
-      user: mockUsers[0]),
-  PostModel(
-      id: 2,
-      title: 'title 1',
-      body: 'text 1',
-      read: false,
-      favorite: false,
-      userId: 3),
-  PostModel(
-      id: 3,
-      title: 'title 1',
-      body: 'text 1',
-      read: false,
-      favorite: true,
-      userId: 2),
-  PostModel(
-      id: 4,
-      title: 'title 1',
-      body: 'text 1',
-      read: false,
-      favorite: true,
-      userId: 2)
-];
+PostModel mockPostsComments = mockPosts..posts[0].comments = mockComments;
+PostModel mockDeletePosts =
+    mockPosts.copyWith(posts: mockPosts.posts..first.comments = mockComments);

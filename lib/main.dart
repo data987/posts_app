@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 
 import 'myapp.dart';
@@ -38,7 +39,9 @@ class PostsBlocDelegate extends BlocObserver {
   }
 }
 
-void main() {
+void main() async {
   Bloc.observer = PostsBlocDelegate();
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build();
   runApp(MyApp());
 }

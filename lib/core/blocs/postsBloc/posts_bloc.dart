@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:zemoga_posts/core/models/comment_model.dart';
 import 'package:zemoga_posts/core/models/post_model.dart';
 import 'package:zemoga_posts/core/models/user_model.dart';
@@ -11,8 +11,27 @@ import 'package:zemoga_posts/core/services/repositories/repos/posts_repository.d
 part 'posts_event.dart';
 part 'posts_state.dart';
 
-class PostsBloc extends Bloc<PostsEvent, PostsState> {
+class PostsBloc extends HydratedBloc<PostsEvent, PostsState> {
   PostsBloc({@required this.postsRepository}) : super(PostsInitial());
+
+  @override
+  PostsState fromJson(Map<String, dynamic> json) {
+    try {
+      final postModel = PostModel.fromJson(json);
+      return PostsLoaded(postsModel: postModel, users: []);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(PostsState state) {
+    if (state is PostsLoaded) {
+      return state.postsModel.toJson();
+    } else {
+      return null;
+    }
+  }
 
   final PostsRepository postsRepository;
 
@@ -41,11 +60,11 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     yield PostsLoading();
     try {
       if (state is PostsInitial || state is PostsDeleted) {
-        final List<PostModel> posts = await postsRepository.getPosts();
-        yield PostsLoaded(posts: posts, users: new List());
+        final PostModel posts = await postsRepository.getPosts();
+        yield PostsLoaded(postsModel: posts, users: new List());
       }
       if (state is PostsLoaded)
-        yield PostsLoaded(posts: state.posts, users: state.users);
+        yield PostsLoaded(postsModel: state.postsModel, users: state.users);
     } catch (e) {
       yield PostsFailed(error: e.toString());
     }
@@ -55,10 +74,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       FetchPostInfo event, PostsLoaded state) async* {
     yield PostsLoading();
     try {
-      final isLoaded = state.posts
+      final isLoaded = state.postsModel.posts
           .where((post) => post.id == event.postId)
           .any((post) => post.comments != null);
-      final List<PostModel> postList = [];
+      final List<Post> postList = [];
       final List<User> userList = [];
 
       if (!isLoaded) {
@@ -66,7 +85,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
             await postsRepository.getComments(event.postId);
         final User userById = await _getUserById(event.userId, state.users);
 
-        state.posts.forEach((post) {
+        state.postsModel.posts.forEach((post) {
           if (post.id == event.postId) {
             postList.add(post
               ..user = userById
@@ -81,7 +100,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       }
 
       yield PostsLoaded(
-          posts: isLoaded ? state.posts : postList,
+          postsModel: isLoaded ? state.postsModel : PostModel(posts: postList),
           users: isLoaded ? state.users : userList);
     } catch (e) {
       yield PostsFailed(error: e.toString());
@@ -92,8 +111,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       FavoritePost event, PostsLoaded state) async* {
     yield PostsLoading();
     try {
-      final List<PostModel> postsWithFavorites = [];
-      state.posts.forEach((post) {
+      final List<Post> postsWithFavorites = [];
+      state.postsModel.posts.forEach((post) {
         if (post.id == event.postId) {
           postsWithFavorites.add(post..favorite = !post.favorite);
         } else {
@@ -101,7 +120,8 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
         }
       });
 
-      yield PostsLoaded(posts: postsWithFavorites, users: state.users);
+      yield PostsLoaded(
+          postsModel: PostModel(posts: postsWithFavorites), users: state.users);
     } catch (e) {
       yield PostsFailed(error: e.toString());
     }
@@ -117,7 +137,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   Stream<PostsState> _deletePosts(DeletePosts event, PostsLoaded state) async* {
     yield PostsLoading();
     try {
-      yield PostsLoaded(posts: [], users: state.users);
+      yield PostsLoaded(postsModel: PostModel(posts: []), users: state.users);
       yield PostsDeleted();
     } catch (e) {
       yield PostsFailed(error: e.toString());
@@ -128,9 +148,9 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       DeletePost event, PostsLoaded state) async* {
     yield PostsLoading();
     try {
-      state.posts.removeWhere((post) => post.id == event.postId);
+      state.postsModel.posts.removeWhere((post) => post.id == event.postId);
       yield PostDeleted();
-      yield PostsLoaded(posts: state.posts, users: state.users);
+      yield PostsLoaded(postsModel: state.postsModel, users: state.users);
     } catch (e) {
       yield PostsFailed(error: e.toString());
     }

@@ -16,7 +16,7 @@ class IosBar extends StatefulWidget {
   final Function onTap;
   final Function changeIndex;
   final bool postInfo;
-  final PostModel post;
+  final Post post;
 
   @override
   _IosBarState createState() => _IosBarState();

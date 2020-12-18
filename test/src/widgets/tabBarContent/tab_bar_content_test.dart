@@ -20,7 +20,8 @@ void main() {
 
   baseMockWidget({key}) {
     return BlocProvider.value(
-        value: mockPostsBloc, child: TabBarContent(key: key, posts: mockPosts));
+        value: mockPostsBloc,
+        child: TabBarContent(key: key, posts: mockPosts.posts));
   }
 
   testWidgets('Delete a post', (tester) async {

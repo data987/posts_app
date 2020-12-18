@@ -4,7 +4,7 @@ import 'package:zemoga_posts/core/models/post_model.dart';
 class IosTile extends StatelessWidget {
   const IosTile({Key key, @required this.post}) : super(key: key);
 
-  final PostModel post;
+  final Post post;
 
   @override
   Widget build(BuildContext context) {

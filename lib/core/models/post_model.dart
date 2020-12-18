@@ -13,6 +13,30 @@ String postModelToJson(PostModel data) => json.encode(data.toJson());
 
 class PostModel {
   PostModel({
+    this.posts,
+  });
+
+  PostModel copyWith({List<Post> posts}) {
+    return PostModel(posts: posts ?? this.posts);
+  }
+
+  List<Post> posts;
+
+  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
+        posts: json["posts"] == null
+            ? null
+            : List<Post>.from(json["posts"].map((x) => Post.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "posts": posts == null
+            ? null
+            : List<dynamic>.from(posts.map((x) => x.toJson())),
+      };
+}
+
+class Post {
+  Post({
     this.userId,
     this.id,
     this.title,
@@ -32,7 +56,7 @@ class PostModel {
   List<Comment> comments;
   User user;
 
-  factory PostModel.fromJson(Map<String, dynamic> json) => PostModel(
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
         userId: json["userId"] == null ? null : json["userId"],
         id: json["id"] == null ? null : json["id"],
         title: json["title"] == null ? null : json["title"],
