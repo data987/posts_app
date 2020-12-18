@@ -34,7 +34,7 @@ git clone https://github.com/data987/posts_app.git
 
 ### Architecture
 
-This app use the **Bloc pattern** for the architecture, BLoC stands for **Business Logic Component**
+This app uses the **Bloc pattern** for the architecture, BLoC stands for **Business Logic Component**
 
 Bloc needs to:
 
